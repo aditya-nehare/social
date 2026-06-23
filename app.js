@@ -3,6 +3,7 @@ const mongoose = require("mongoose");
 const path = require("path");
 const ejs = require("ejs");
 const methodOverride = require("method-override");
+const engine = require("ejs-mate");
 
 const Listing = require("./models/lisitng.js");
 
@@ -15,6 +16,8 @@ app.use(methodOverride("_method"));
 
 app.set("view engine", "ejs");
 app.set("ejs", path.join(__dirname, "views"));
+
+app.engine("ejs", engine);
 
 connectDB()
   .then(() => console.log("connected to DB"))
@@ -63,6 +66,19 @@ app.delete("/listings/:id", async (req, res) => {
   let { id } = req.params;
   await Listing.findByIdAndDelete(id);
   res.redirect("/listings");
+});
+
+// ! EXTRAS
+app.get("/listings/terms", (req, res) => {
+  res.render("extras/terms.ejs");
+});
+
+app.get("/listings/privacy", (req, res) => {
+  res.render("extras/privacy.ejs");
+});
+
+app.get("/listings/support", (req, res) => {
+  res.render("extras/support.ejs");
 });
 
 //show route
