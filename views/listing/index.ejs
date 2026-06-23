@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>The BNB</title>
+  </head>
+  <body>
+    <div>
+      <h1>The BNB</h1>
+    </div>
+    <form method="get" action="/listings/new">
+      <button>new</button>
+    </form>
+    <hr />
+
+    <div>
+      <% for (let listing of listings) { %>
+      <h2><%= listing.title %></h2>
+      <p><%= listing.description%></p>
+      <p><%= listing.location%></p>
+      <p><%= listing.country%></p>
+      <p><%= listing.price%> $</p>
+
+      <form method="get" action="/listings/<%= listing._id %>">
+        <button>view</button>
+      </form>
+      <hr />
+      <% } %>
+    </div>
+  </body>
+</html>

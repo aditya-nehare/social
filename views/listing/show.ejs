@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <div>
+      <h1><%= listing.title %></h1>
+      <p><%= listing.description %></p>
+      <p><%= listing.location %></p>
+      <p><%= listing.country %></p>
+      <p><%= listing.price %></p>
+    </div>
+    <form method="get" action="/listings/<%= listing._id %>/edit">
+      <button>edit listing</button>
+    </form>
+    <form method="post" action="/listings/<%= listing._id %>?_method=delete">
+      <button>delete listing</button>
+    </form>
+  </body>
+</html>
