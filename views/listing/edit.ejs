@@ -5,9 +5,18 @@
     <div class="col-lg-8 col-md-10">
       <div class="card shadow-lg border-0 rounded-5 p-4">
         <h2 class="fw-bold mb-4 text-center">Edit Listing</h2>
+        <div class="card border-0 rounded-5 overflow-hidden">
+          <img
+            src="<%= listing.image %>"
+            loading="lazy"
+            class="card-img-top"
+            alt="listing image"
+            style="height: 400px; object-fit: cover"
+          />
+        </div>
 
         <form method="post" action="/listings/<%= listing._id %>?_method=PATCH">
-          <div class="mb-3">
+          <div class="mb-3 mt-3">
             <label for="title" class="form-label fw-semibold">Title</label>
             <input
               type="text"
@@ -18,6 +27,7 @@
               value="<%= listing.title %>"
               required
             />
+            <div class="valid-feedback">Looks Good</div>
           </div>
 
           <div class="mb-3">
@@ -62,6 +72,7 @@
               value="<%= listing.location %>"
               required
             />
+            <div class="valid-feedback">Nice Location</div>
           </div>
 
           <div class="mb-3">
@@ -88,6 +99,7 @@
               value="<%= listing.price %>"
               required
             />
+            <div class="invalid-feedback">Price should be in Number</div>
           </div>
 
           <div class="d-flex justify-content-between">
