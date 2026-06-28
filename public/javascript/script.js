@@ -21,3 +21,10 @@
     );
   });
 })();
+
+const slider = document.getElementById("rating");
+const ratingValue = document.getElementById("ratingValue");
+
+slider.addEventListener("input", function () {
+  ratingValue.textContent = this.value;
+});

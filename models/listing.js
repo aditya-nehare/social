@@ -35,6 +35,13 @@ const listingSchema = new Schema({
         ? "https://images.unsplash.com/photo-1506744038136-46273834b3fb"
         : v,
   },
+
+  reviews: [
+    {
+      type: Schema.Types.ObjectId,
+      ref: "Review",
+    },
+  ],
 });
 const Listing = mongoose.model("Listing", listingSchema);
 
