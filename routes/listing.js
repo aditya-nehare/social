@@ -3,6 +3,7 @@ const router = express.Router();
 
 const Listing = require("../models/listing.js");
 const wrapAsync = require("../utils/wrapAsync.js");
+const ExpressError = require("../utils/expressError.js");
 const { validateListing, validateObjectId } = require("../middleware.js");
 
 router.get(
@@ -24,7 +25,8 @@ router.post(
   wrapAsync(async (req, res) => {
     const newListing = new Listing(req.body.listing);
     await newListing.save();
-    res.redirect("/");
+    req.flash("success", "New Listing Added!");
+    res.redirect(`/listings/${newListing._id}`);
   })
 );
 
@@ -40,7 +42,6 @@ router.get(
     if (!listing) {
       throw new ExpressError(404, "Listing not found");
     }
-
     res.render("listing/edit", { listing });
   })
 );
@@ -60,8 +61,8 @@ router.patch(
     if (!listing) {
       throw new ExpressError(404, "Listing not found");
     }
-
-    res.redirect(`/${id}`);
+    req.flash("success", "Listing Updated")
+    res.redirect(`/listings/${id}`);
   })
 );
 
@@ -76,13 +77,13 @@ router.delete(
     if (!listing) {
       throw new ExpressError(404, "Listing not found");
     }
-
-    res.redirect("/");
+    req.flash("error", "Listing Removed")
+    res.redirect("/listings");
   })
 );
 
 router.get(
-  "/listings/:id",
+  "/:id",
   validateObjectId,
   wrapAsync(async (req, res) => {
     const { id } = req.params;
