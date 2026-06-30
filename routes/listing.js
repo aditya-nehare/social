@@ -4,7 +4,7 @@ const router = express.Router();
 const Listing = require("../models/listing.js");
 const wrapAsync = require("../utils/wrapAsync.js");
 const ExpressError = require("../utils/expressError.js");
-const { validateListing, validateObjectId } = require("../middleware.js");
+const { validateListing, validateObjectId, isLoggedIn } = require("../middleware.js");
 
 router.get(
   "/",
@@ -14,7 +14,7 @@ router.get(
   })
 );
 
-router.get("/new", (req, res) => {
+router.get("/new",isLoggedIn, (req, res) => {
   res.render("listing/new");
 });
 
@@ -33,7 +33,7 @@ router.post(
 // edit route
 router.get(
   "/:id/edit",
-  validateObjectId,
+  validateObjectId, isLoggedIn,
   wrapAsync(async (req, res) => {
     const { id } = req.params;
 
@@ -49,6 +49,7 @@ router.get(
 // update route
 router.patch(
   "/:id",
+  isLoggedIn,
   validateObjectId,
   validateListing,
   wrapAsync(async (req, res) => {
@@ -61,7 +62,7 @@ router.patch(
     if (!listing) {
       throw new ExpressError(404, "Listing not found");
     }
-    req.flash("success", "Listing Updated")
+    req.flash("success", "Listing Updated");
     res.redirect(`/listings/${id}`);
   })
 );
@@ -69,6 +70,7 @@ router.patch(
 // delete route
 router.delete(
   "/:id",
+  isLoggedIn,
   validateObjectId,
   wrapAsync(async (req, res) => {
     const { id } = req.params;
@@ -77,7 +79,7 @@ router.delete(
     if (!listing) {
       throw new ExpressError(404, "Listing not found");
     }
-    req.flash("error", "Listing Removed")
+    req.flash("error", "Listing Removed");
     res.redirect("/listings");
   })
 );

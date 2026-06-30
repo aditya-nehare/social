@@ -1,3 +1,5 @@
+require("dotenv").config();
+
 const express = require("express");
 const mongoose = require("mongoose");
 const path = require("path");
@@ -6,18 +8,22 @@ const engine = require("ejs-mate");
 const session = require("express-session");
 const flash = require("connect-flash");
 
+const passport = require("passport");
+require("./config/passport");
+
 const listingRouter = require("./routes/listing.js");
 const reviewRouter = require("./routes/review.js");
+const userRouter = require("./routes/user.js");
 
 const app = express();
 const port = 8080;
 const MONGO_URL = "mongodb://127.0.0.1:27017/social";
 const sessionOpt = {
-  secret: "keyboard cat",
+  secret: process.env.SESSION_SECRET,
   resave: false,
-  saveUninitialized: true,
+  saveUninitialized: false,
   cookie: {
-    maxAge: 1000 * 60 * 60 * 24 * 3,
+    maxAge: 1000 * 60 * 60 * 24,
     httpOnly: true,
   },
 };
@@ -34,15 +40,20 @@ app.use(express.static(path.join(__dirname, "public")));
 app.use(session(sessionOpt));
 app.use(flash());
 
+app.use(passport.initialize());
+app.use(passport.session());
+
 app.use((req, res, next) => {
   res.locals.success = req.flash("success");
   res.locals.error = req.flash("error");
+  res.locals.currUser = req.user;
   next();
 });
 
 // Routes
 app.use("/listings", listingRouter);
 app.use("/listings/:id/reviews", reviewRouter);
+app.use("/", userRouter);
 
 app.get("/", (req, res) => {
   res.send("Hello World");
