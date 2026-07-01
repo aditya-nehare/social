@@ -1,6 +1,8 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
+const Review = require("./review");
+
 const listingSchema = new Schema({
   title: {
     type: String,
@@ -42,6 +44,11 @@ const listingSchema = new Schema({
       ref: "Review",
     },
   ],
+
+  owner: {
+    type: Schema.Types.ObjectId,
+    ref: "User",
+  },
 });
 
 // Delete all associated reviews when a listing is deleted

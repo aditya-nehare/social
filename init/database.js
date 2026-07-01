@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 
-const data = require("./raw_data.js");
-const Listing = require("../model/lisitng.js");
+const initdata = require("./raw_data.js");
+const Listing = require("../models/listing.js");
 
 main()
   .then(() => {
@@ -15,22 +15,13 @@ async function main() {
   await mongoose.connect("mongodb://127.0.0.1:27017/social");
 }
 
-let init = () => {
-  Listing.deleteMany({})
-    .then((res) => {
-      console.log(res);
-    })
-    .catch((err) => {
-      console.log(err);
-    });
-
-  Listing.insertMany(data.data)
-    .then(() => {
-      console.log("data inserted");
-    })
-    .catch((err) => {
-      console.log(err);
-    });
+let init = async () => {
+  await Listing.deleteMany({});
+  initdata.data = initdata.data.map((obj) => ({
+    ...obj,
+    owner: "6a4208968983c04d91db4468",
+  }));
+  await Listing.insertMany(initdata.data);
 };
 
 init();

@@ -5,9 +5,10 @@ const passport = require("passport");
 const User = require("../models/user");
 
 const wrapAsync = require("../utils/wrapAsync");
+const { saveRedirectUrl, storeReturnTo } = require("../middleware");
 
 //USER
-router.get("/signup", (req, res) => {
+router.get("/signup", storeReturnTo, (req, res) => {
   res.render("users/signup");
 });
 
@@ -32,21 +33,27 @@ router.post(
   })
 );
 
-router.get("/login", (req, res) => {
+router.get("/login", storeReturnTo, (req, res) => {
   res.render("users/login");
 });
 
 router.post(
   "/login",
+  saveRedirectUrl,
   passport.authenticate("local", {
     failureRedirect: "/login",
     failureFlash: true,
   }),
   (req, res) => {
-    req.flash("success", `Welcome back, ${req.user.username}!`);
-    res.redirect("/listings");
+    req.flash("success", "Welcome Back!");
+
+    const redirectUrl = res.locals.redirectUrl || "/listings";
+    delete req.session.redirectUrl;
+
+    res.redirect(redirectUrl);
   }
 );
+
 router.get(
   "/auth/google",
   passport.authenticate("google", {

@@ -4,7 +4,13 @@ const router = express.Router();
 const Listing = require("../models/listing.js");
 const wrapAsync = require("../utils/wrapAsync.js");
 const ExpressError = require("../utils/expressError.js");
-const { validateListing, validateObjectId, isLoggedIn } = require("../middleware.js");
+
+const {
+  validateListing,
+  validateObjectId,
+  isLoggedIn,
+  isOwner,
+} = require("../middleware.js");
 
 router.get(
   "/",
@@ -14,16 +20,18 @@ router.get(
   })
 );
 
-router.get("/new",isLoggedIn, (req, res) => {
+router.get("/new", isLoggedIn, (req, res) => {
   res.render("listing/new");
 });
 
 // create route
 router.post(
   "/",
+  isLoggedIn,
   validateListing,
   wrapAsync(async (req, res) => {
     const newListing = new Listing(req.body.listing);
+    newListing.owner = req.user._id;
     await newListing.save();
     req.flash("success", "New Listing Added!");
     res.redirect(`/listings/${newListing._id}`);
@@ -33,12 +41,12 @@ router.post(
 // edit route
 router.get(
   "/:id/edit",
-  validateObjectId, isLoggedIn,
+  validateObjectId,
+  isLoggedIn,
+  isOwner,
   wrapAsync(async (req, res) => {
     const { id } = req.params;
-
     const listing = await Listing.findById(id);
-
     if (!listing) {
       throw new ExpressError(404, "Listing not found");
     }
@@ -49,8 +57,9 @@ router.get(
 // update route
 router.patch(
   "/:id",
-  isLoggedIn,
   validateObjectId,
+  isLoggedIn,
+  isOwner,
   validateListing,
   wrapAsync(async (req, res) => {
     const { id } = req.params;
@@ -70,8 +79,9 @@ router.patch(
 // delete route
 router.delete(
   "/:id",
-  isLoggedIn,
   validateObjectId,
+  isLoggedIn,
+  isOwner,
   wrapAsync(async (req, res) => {
     const { id } = req.params;
     const listing = await Listing.findByIdAndDelete(id);
@@ -89,7 +99,16 @@ router.get(
   validateObjectId,
   wrapAsync(async (req, res) => {
     const { id } = req.params;
-    const listing = await Listing.findById(id).populate("reviews");
+    const listing = await Listing.findById(id)
+      .populate({
+        path: "reviews",
+        populate: {
+          path: "author",
+        },
+      })
+      .populate({
+        path: "owner",
+      });
 
     if (!listing) {
       throw new ExpressError(404, "Listing not found");

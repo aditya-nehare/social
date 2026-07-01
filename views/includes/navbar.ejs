@@ -15,20 +15,25 @@
       </button>
 
       <div class="collapse navbar-collapse" id="navbarNav">
+        <% if (!currUser) { %>
         <ul class="navbar-nav ms-auto">
-          <li class="nav-item">
-            <a class="nav-link" href="/listings/new">New Listing</a>
-          </li>
           <li class="nav-item">
             <a class="nav-link" href="/signup">Signup</a>
           </li>
           <li class="nav-item">
             <a class="nav-link" href="/login">Login</a>
           </li>
+        </ul>
+        <% } else { %>
+        <ul class="navbar-nav ms-auto">
+          <li class="nav-item">
+            <a class="nav-link" href="/listings/new">New Listing</a>
+          </li>
           <li class="nav-item">
             <a class="nav-link" href="/logout">Logout</a>
           </li>
         </ul>
+        <% } %>
       </div>
     </div>
   </nav>
