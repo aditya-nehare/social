@@ -56,7 +56,7 @@ app.use("/listings/:id/reviews", reviewRouter);
 app.use("/", userRouter);
 
 app.get("/", (req, res) => {
-  res.send("Hello World");
+  res.render("home");
 });
 
 // Extras

@@ -1,131 +1,16 @@
-<% layout('/layouts/Boilerplate.ejs') %>
+<% layout("/layouts/Boilerplate.ejs") %>
 
 <div class="container py-5">
-  <div class="row justify-content-center">
+  <div class="row mb-5">
+    <div class="col-12"><%- include("./partials/listingCard") %></div>
+  </div>
+
+  <div class="row g-4">
     <div class="col-lg-8">
-      <div class="card border-0 shadow-lg rounded-5 overflow-hidden">
-        <img
-          src="<%= listing.image %>"
-          loading="lazy"
-          class="card-img-top"
-          alt="listing image"
-          style="height: 400px; object-fit: cover"
-        />
-        <p class="text-muted fs-5 mb-4">
-          owned by: <%= listing.owner.username %>
-        </p>
+      <%- include("./partials/reviewList") %> <% if(currUser){ %>
 
-        <div class="card-body p-4">
-          <h1 class="fw-bold mb-3"><%= listing.title %></h1>
+      <div class="mt-4"><%- include("./partials/reviewForm") %></div>
 
-          <p class="text-muted fs-5 mb-4"><%= listing.description %></p>
-
-          <div class="mb-3">
-            <p class="mb-2">
-              <strong>Location:</strong>
-              <%= listing.location %>, <%= listing.country %>
-            </p>
-
-            <p class="mb-2">
-              <strong>Price:</strong>
-              <span class="text-success fw-bold fs-4">
-                $ <%= listing.price %>
-              </span>
-              / night
-            </p>
-          </div>
-
-          <% if(currUser && currUser._id.equals(listing.owner._id)) { %>
-          <div class="d-flex gap-3 mt-4">
-            <a
-              href="/listings/<%= listing._id %>/edit"
-              class="btn btn-outline-dark rounded-pill px-4"
-            >
-              Edit Listing
-            </a>
-
-            <form
-              method="POST"
-              action="/listings/<%= listing._id %>?_method=DELETE"
-            >
-              <button class="btn btn-danger rounded-pill px-4">Delete</button>
-            </form>
-          </div>
-          <% } %>
-        </div>
-      </div>
-      <div class="mt-5">
-        <h2 class="fw-bold mb-4">Reviews</h2>
-
-        <% if (listing.reviews.length > 0) { %> <%
-        listing.reviews.forEach(function(review) { %>
-        <div class="card border-0 shadow-sm rounded-4 mb-3">
-          <div class="card-body">
-            <p class="text-muted mt-3 mb-0"><%= review.author.username %></p>
-            <div class="d-flex justify-content-between align-items-center">
-              <h5 class="mb-0"><%= review.rating %>/5</h5>
-            </div>
-
-            <p class="text-muted mt-3 mb-0"><%= review.comment %></p>
-            <form
-              action="/listings/<%= listing._id %>/reviews/<%= review._id %>?_method=DELETE"
-              method="POST"
-            >
-              <button class="btn btn-sm btn-outline-danger">Delete</button>
-            </form>
-          </div>
-        </div>
-
-        <% }) %> <% } else { %>
-
-        <div class="alert-secondary">No reviews yet.</div>
-      </div>
-      <% } %> <% if(currUser) {%>
-      <div class="my-5">
-        <div class="card border-0 shadow-lg rounded-4">
-          <div class="card-body p-4">
-            <h3 class="fw-bold mb-4">Leave a Review</h3>
-
-            <form action="/listings/<%= listing._id %>/reviews" method="post">
-              <div class="mb-4">
-                <label for="rating" class="form-label fw-semibold">
-                  Rating:
-                  <span id="ratingValue">3</span>/5
-                </label>
-
-                <input
-                  type="range"
-                  class="form-range"
-                  min="1"
-                  max="5"
-                  step="1"
-                  value="3"
-                  id="rating"
-                  name="review[rating]"
-                />
-              </div>
-              <div class="mb-4">
-                <label for="comment" class="form-label fw-semibold">
-                  Review
-                </label>
-
-                <textarea
-                  id="comment"
-                  class="form-control"
-                  rows="4"
-                  name="review[comment]"
-                  placeholder="Share your experience..."
-                  required
-                ></textarea>
-              </div>
-
-              <button type="submit" class="btn btn-dark rounded-pill px-4">
-                Submit Review
-              </button>
-            </form>
-          </div>
-        </div>
-      </div>
       <% } %>
     </div>
   </div>

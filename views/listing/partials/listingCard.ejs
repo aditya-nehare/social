@@ -1,0 +1,65 @@
+<div class="card border-0 shadow rounded-4 overflow-hidden">
+  <div class="position-relative">
+    <img
+      src="<%= listing.image %>"
+      class="card-img-top"
+      alt="<%= listing.title %>"
+      style="height: 500px; object-fit: cover"
+    />
+
+    <div
+      class="position-absolute top-0 end-0 m-3 bg-white shadow-sm rounded-pill px-3 py-2"
+    >
+      <span class="fw-bold fs-5">
+        $ <%= listing.price.toLocaleString("en-IN") %>
+      </span>
+
+      <small class="text-muted"> / night </small>
+    </div>
+  </div>
+
+
+  <div class="card-body p-4">
+
+
+    <h2 class="fw-bold mb-3"><%= listing.title %></h2>
+
+    <div
+      class="d-flex justify-content-between align-items-center flex-wrap mb-4"
+    >
+      <div>
+        <small class="text-secondary"> Hosted by </small>
+
+        <h6 class="mb-0 fw-semibold"><%= listing.owner.username %></h6>
+      </div>
+
+      <div class="text-end">
+        <small class="text-secondary"> Location </small>
+
+        <h6 class="mb-0">📍 <%= listing.location %>, <%= listing.country %></h6>
+      </div>
+    </div>
+
+    <hr />
+    <h5 class="fw-bold mb-3">About this place</h5>
+
+    <p class="text-muted lh-lg"><%= listing.description %></p>
+
+    <% if(currUser && currUser._id.equals(listing.owner._id)){ %>
+
+    <div class="d-flex gap-3 mt-4">
+      <a
+        href="/listings/<%= listing._id %>/edit"
+        class="btn btn-dark rounded-pill px-4"
+      >
+        Edit
+      </a>
+
+      <form action="/listings/<%= listing._id %>?_method=DELETE" method="POST">
+        <button class="btn btn-outline-danger rounded-pill px-4">Delete</button>
+      </form>
+    </div>
+
+    <% } %>
+  </div>
+</div>

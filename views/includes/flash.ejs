@@ -1,32 +1,25 @@
 <% if (success.length) { %>
-<div class="alert alert-success alert-dismissible fade show" role="alert">
-  <%= success %>
-
-  <button
-    type="button"
-    class="btn-close"
-    data-bs-dismiss="alert"
-    aria-label="Close"
-  ></button>
+<div
+  class="alert alert-success alert-dismissible fade show position-fixed top-0 end-0 mt-4 me-4 rounded-pill shadow-lg border-0 px-4 py-3 d-flex align-items-center"
+  role="alert"
+  style="max-width: 360px; z-index: 1080"
+>
+  <span class="fw-medium flex-grow-1"> <%= success %> </span>
 </div>
 <% } %> <% if (error.length) { %>
-<div class="alert alert-danger alert-dismissible fade show" role="alert">
-  <%= error %>
-
-  <button
-    type="button"
-    class="btn-close"
-    data-bs-dismiss="alert"
-    aria-label="Close"
-  ></button>
+<div
+  class="alert alert-danger alert-dismissible fade show position-fixed top-0 end-0 mt-4 me-4 rounded-pill shadow-lg border-0 px-4 py-3 d-flex align-items-center"
+  role="alert"
+  style="max-width: 360px; z-index: 1080"
+>
+  <span class="fw-medium flex-grow-1"> <%= error %> </span>
 </div>
 <% } %>
 
 <script>
   setTimeout(() => {
     document.querySelectorAll(".alert").forEach((alert) => {
-      const bsAlert = bootstrap.Alert.getOrCreateInstance(alert);
-      bsAlert.close();
+      bootstrap.Alert.getOrCreateInstance(alert).close();
     });
   }, 3000);
 </script>
