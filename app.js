@@ -1,6 +1,4 @@
-if (process.env.NODE_ENV !== "production") {
-  require("dotenv").config();
-}
+require("dotenv").config();
 
 const express = require("express");
 const mongoose = require("mongoose");
@@ -9,6 +7,7 @@ const methodOverride = require("method-override");
 const engine = require("ejs-mate");
 const session = require("express-session");
 const flash = require("connect-flash");
+const MongoStore = require("connect-mongo").default;
 
 const ExpressError = require("./utils/expressError.js");
 
@@ -21,8 +20,22 @@ const userRouter = require("./routes/user.js");
 
 const app = express();
 const port = 8080;
-const MONGO_URL = "mongodb://127.0.0.1:27017/social";
+const MONGO_URL = process.env.MONGO_URL;
+
+const Store = MongoStore.create({
+  mongoUrl: process.env.MONGO_URL,
+  crypto: {
+    secret: process.env.SESSION_SRT,
+  },
+  touchAfter: 24 * 3600,
+});
+
+Store.on("error", (err) => {
+  console.log("MongoStore Error:", err);
+});
+
 const sessionOpt = {
+  store: Store,
   secret: process.env.SESSION_SRT,
   resave: false,
   saveUninitialized: false,
