@@ -19,10 +19,10 @@ const reviewRouter = require("./routes/review.js");
 const userRouter = require("./routes/user.js");
 
 const app = express();
-const port = 8080;
+const port = process.env.PORT || 8080;
 const MONGO_URL = process.env.MONGO_URL;
 
-const Store = MongoStore.create({
+const store = MongoStore.create({
   mongoUrl: process.env.MONGO_URL,
   crypto: {
     secret: process.env.SESSION_SRT,
@@ -30,18 +30,19 @@ const Store = MongoStore.create({
   touchAfter: 24 * 3600,
 });
 
-Store.on("error", (err) => {
+store.on("error", (err) => {
   console.log("MongoStore Error:", err);
 });
 
 const sessionOpt = {
-  store: Store,
+  store: store,
   secret: process.env.SESSION_SRT,
   resave: false,
   saveUninitialized: false,
   cookie: {
     maxAge: 1000 * 60 * 60 * 24,
     httpOnly: true,
+    secure: process.env.NODE_ENV === "production",
   },
 };
 
@@ -54,6 +55,7 @@ app.engine("ejs", engine);
 app.use(express.urlencoded({ extended: true }));
 app.use(methodOverride("_method"));
 app.use(express.static(path.join(__dirname, "public")));
+app.set("trust proxy", 1);
 app.use(session(sessionOpt));
 app.use(flash());
 
