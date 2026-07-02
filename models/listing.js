@@ -31,11 +31,8 @@ const listingSchema = new Schema({
   },
 
   image: {
-    type: String,
-    set: (v) =>
-      v === ""
-        ? "https://images.unsplash.com/photo-1506744038136-46273834b3fb"
-        : v,
+    url: String,
+    filename: String,
   },
 
   reviews: [

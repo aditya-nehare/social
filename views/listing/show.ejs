@@ -1,16 +1,14 @@
 <% layout("/layouts/Boilerplate.ejs") %>
 
-<div class="container py-5">
-  <div class="row mb-5">
+<div class="container">
+  <div class="row">
     <div class="col-12"><%- include("./partials/listingCard") %></div>
   </div>
 
-  <div class="row g-4">
+  <div class="row g-0">
     <div class="col-lg-8">
       <%- include("./partials/reviewList") %> <% if(currUser){ %>
-
       <div class="mt-4"><%- include("./partials/reviewForm") %></div>
-
       <% } %>
     </div>
   </div>

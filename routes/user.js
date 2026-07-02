@@ -7,36 +7,11 @@ const User = require("../models/user");
 const wrapAsync = require("../utils/wrapAsync");
 const { saveRedirectUrl, storeReturnTo } = require("../middleware");
 
-//USER
-router.get("/signup", storeReturnTo, (req, res) => {
-  res.render("users/signup");
-});
+const UserController = require("../controller/user");
 
-router.post(
-  "/signup",
-  wrapAsync(async (req, res, next) => {
-    const { username, email, password } = req.body;
-
-    const newUser = new User({
-      username,
-      email,
-    });
-
-    const registeredUser = await User.register(newUser, password);
-
-    req.login(registeredUser, (err) => {
-      if (err) return next(err);
-
-      req.flash("success", `Welcome ${username}!`);
-      res.redirect("/listings");
-    });
-  })
-);
-
-router.get("/login", storeReturnTo, (req, res) => {
-  res.render("users/login");
-});
-
+router.get("/signup", storeReturnTo, UserController.signupPage);
+router.post("/signup", wrapAsync(UserController.signup));
+router.get("/login", storeReturnTo, UserController.loginPage);
 router.post(
   "/login",
   saveRedirectUrl,
@@ -44,14 +19,7 @@ router.post(
     failureRedirect: "/login",
     failureFlash: true,
   }),
-  (req, res) => {
-    req.flash("success", "Welcome Back!");
-
-    const redirectUrl = res.locals.redirectUrl || "/listings";
-    delete req.session.redirectUrl;
-
-    res.redirect(redirectUrl);
-  }
+  UserController.login
 );
 
 router.get(
@@ -67,21 +35,9 @@ router.get(
     failureRedirect: "/login",
     failureFlash: true,
   }),
-  (req, res) => {
-    req.flash("success", `Welcome ${req.user.username}!`);
-    res.redirect("/listings");
-  }
+  UserController.google
 );
 
-router.get("/logout", (req, res, next) => {
-  req.logout((err) => {
-    if (err) {
-      return next(err);
-    }
-
-    req.flash("success", "Logged out successfully!");
-    res.redirect("/listings");
-  });
-});
+router.get("/logout", UserController.logout);
 
 module.exports = router;

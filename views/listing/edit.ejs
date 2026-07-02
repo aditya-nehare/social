@@ -15,7 +15,11 @@
           />
         </div>
 
-        <form method="post" action="/listings/<%= listing._id %>?_method=PATCH">
+        <form
+          method="post"
+          action="/listings/<%= listing._id %>?_method=PATCH"
+          enctype="multipart/form-data"
+        >
           <div class="mb-3 mt-3">
             <label for="title" class="form-label fw-semibold">Title</label>
             <input
@@ -49,13 +53,12 @@
           <div class="mb-3">
             <label for="image" class="form-label fw-semibold">Image Link</label>
             <input
-              type="url"
+              type="file"
               id="image"
               name="listing[image]"
               class="form-control rounded-3"
               placeholder="Enter image URL"
               value="<%= listing.image %>"
-              required
             />
           </div>
 

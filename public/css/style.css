@@ -1,91 +1,77 @@
-.listing-link {
-  text-decoration: none;
-  color: inherit;
+.category-bar {
+  white-space: nowrap;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.category-bar::-webkit-scrollbar {
+  display: none;
+}
+
+.category-item {
+  min-width: 85px;
+  text-align: center;
+  color: #6c757d !important;
+  border-bottom: 2px solid transparent;
+  transition: 0.2s;
+}
+
+.category-item:hover {
+  color: #000 !important;
+  border-bottom: 2px solid #000;
+}
+
+.input-group {
+  max-width: 260px;
+}
+
+.form-control:focus {
+  box-shadow: none;
+}
+
+.input-group:focus-within {
+  border-color: #999 !important;
 }
 
 .listing-card {
   background: #fff;
-  border-radius: 24px;
+  border: 1px solid #ececec;
+  border-radius: 4px;
   overflow: hidden;
-  transition: 0.35s;
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.05);
+  transition: all 0.25s ease;
   height: 100%;
+  box-shadow: 0 8px 24px rgb(199, 199, 199);
 }
 
 .listing-card:hover {
-  transform: translateY(-8px);
-  box-shadow: 0 20px 45px rgba(0, 0, 0, 0.12);
+  transform: translateY(-5px);
+  box-shadow: 0 8px 24px rgb(0, 0, 0);
 }
 
-.image-wrapper {
-  position: relative;
-  overflow: hidden;
+.listing-img {
+  width: 100%;
+  height: 250px;
+  object-fit: cover;
+  display: block;
+}
+
+.listing-card h6 {
+  font-size: 1rem;
+  letter-spacing: -0.2px;
+}
+
+.listing-card p {
+  line-height: 1.45;
+}
+
+a {
+  color: inherit;
 }
 
 .listing-image {
-  width: 100%;
-  height: 350px;
+  height: 500px;
   object-fit: cover;
-  transition: 0.45s;
-}
-
-.listing-card:hover .listing-image {
-  transform: scale(1.08);
-}
-
-.price-badge {
-  position: absolute;
-  top: 15px;
-  right: 15px;
-  background: white;
-  padding: 8px 15px;
-  border-radius: 50px;
-  font-weight: 700;
-  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.15);
-}
-
-.price-badge span {
-  font-size: 0.8rem;
-  color: #777;
-  font-weight: 500;
-}
-
-.card-content {
-  padding: 22px;
-}
-
-.listing-title {
-  font-weight: 700;
-  margin-bottom: 8px;
-}
-
-.listing-location {
-  color: #777;
-  margin-bottom: 12px;
-  font-size: 0.95rem;
-}
-
-.listing-description {
-  color: #666;
-  line-height: 1.6;
-  min-height: 70px;
-  margin-bottom: 20px;
-}
-
-.view-btn {
-  border: none;
-  background: #111;
-  color: white;
-  padding: 10px 24px;
-  border-radius: 50px;
-  transition: 0.3s;
-  font-weight: 600;
-}
-
-.view-btn:hover {
-  background: #ff385c;
-  color: white;
-  transform: scale(1.04);
+  border-radius: 12px;
 }
 
 /* Navbar */
@@ -203,7 +189,7 @@
 
 .hero-section {
   background: linear-gradient(rgba(0, 0, 0, 0.45), rgba(0, 0, 0, 0.45)),
-    url("https://4kwallpapers.com/images/walls/thumbs_3t/26685.jpg");
+    url("https://4kwallpapers.com/images/walls/thumbs_3t/22278.jpg");
 
   background-size: cover;
 
@@ -226,4 +212,29 @@
 
 .btn:hover {
   transform: translateY(-2px);
+}
+
+.navbar {
+  background: #fff !important;
+}
+
+.navbar-brand {
+  letter-spacing: -0.5px;
+}
+
+.nav-link {
+  color: #444 !important;
+  transition: 0.2s;
+}
+
+.nav-link:hover {
+  color: #000 !important;
+}
+
+.btn {
+  border-radius: 10px;
+}
+
+.navbar-toggler:focus {
+  box-shadow: none;
 }
